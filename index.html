@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Aura earnings | AURA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="logo-bg" aria-hidden="true"></div>
+  <div class="app-wrap">
+  <header class="main-header">
+    <div class="header-brand">
+      <h1 class="header-title">Aura earnings</h1>
+      <span class="header-subtitle">Performance &amp; accounts</span>
+    </div>
+    <div class="header-right">
+      <div class="data-up-to" id="dataUpTo">Data up to —</div>
+      <div class="upload-panel">
+        <details class="upload-details">
+          <summary>📂 Data & settings</summary>
+          <div class="upload-inner">
+            <div class="upload-row">
+              <input type="file" id="fileInput" accept=".csv,.xlsx,.xls" />
+              <a href="dashboard_template.csv" download class="template-link">Template</a>
+              <button type="button" id="clearDataBtn" class="clear-btn">Clear</button>
+            </div>
+            <div class="upload-row compare-row">
+              <label><span>Month</span><select id="thisMonth"></select><select id="thisYear"></select></label>
+            </div>
+            <div class="upload-row date-range-row">
+              <label><span>From</span><input type="date" id="dateFrom" title="Optional: use custom date range instead of month + through day" /></label>
+              <label><span>To</span><input type="date" id="dateTo" title="Optional: use custom date range" /></label>
+            </div>
+            <div class="settings-row" id="manualTotalsRow">
+              <label><span>Messages</span><input type="number" id="messages" value="42000" min="0" /></label>
+              <label><span>Subs</span><input type="number" id="subs" value="18000" min="0" /></label>
+              <label><span id="lastMonthLabel">Last month</span><input type="number" id="lastMonthSameDays" value="52000" min="0" /></label>
+              <label><span>Days/mo</span><input type="number" id="daysInMonth" value="30" min="28" /></label>
+            </div>
+            <p class="raw-mode-hint" id="rawModeHint" style="display: none;">Totals from raw data.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </header>
+
+  <section class="kpi-section">
+    <h2 class="section-title">Overview</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-card--primary">
+        <span class="kpi-label">Total Sales</span>
+        <p class="kpi-value" id="totalSales">$0</p>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Messages</span>
+        <p class="kpi-value" id="messageSales">$0</p>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Subscriptions</span>
+        <p class="kpi-value" id="subSales">$0</p>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label" id="monthVsLastLabel">This month vs last</span>
+        <p class="kpi-value kpi-value--pct" id="monthVsLast">—</p>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Forecast (Month)</span>
+        <p class="kpi-value" id="forecast">$0</p>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">Agency Growth</span>
+        <p class="kpi-value kpi-value--pct" id="agencyGrowth">—</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="filters-section">
+    <h2 class="section-title">Accounts Performance</h2>
+    <div class="filters-row">
+      <label>
+        <span>Model</span>
+        <div class="filter-autocomplete">
+          <input type="text" id="filterModelInput" placeholder="Type to search models…" autocomplete="off" aria-label="Search or select model" />
+          <input type="hidden" id="filterModel" />
+          <div class="filter-dropdown" id="filterModelDropdown" role="listbox"></div>
+        </div>
+      </label>
+      <label>
+        <span>Partner</span>
+        <div class="filter-autocomplete">
+          <input type="text" id="filterPartnerInput" placeholder="Type to search partners…" autocomplete="off" aria-label="Search or select partner" />
+          <input type="hidden" id="filterPartner" />
+          <div class="filter-dropdown" id="filterPartnerDropdown" role="listbox"></div>
+        </div>
+      </label>
+    </div>
+    <div class="filters-actions">
+      <button type="button" id="downloadViewBtn" class="btn-download">Download view</button>
+      <div class="download-menu" id="downloadMenu">
+        <button type="button" data-format="csv">CSV</button>
+        <button type="button" data-format="xlsx">Excel</button>
+        <button type="button" data-format="pdf">PDF</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="table-section">
+    <div class="table-wrap">
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th data-sort="name" class="sortable" title="Click to sort">Account</th>
+        <th data-sort="partner" class="sortable" title="Click to sort">Partner</th>
+        <th data-sort="sales" class="sortable" title="Click to sort">Current month (through day-1)</th>
+        <th data-sort="lastMonth" class="sortable" title="Click to sort">Last month (through day-1)</th>
+        <th data-sort="dif" class="sortable" title="Click to sort">Delta</th>
+        <th data-sort="weight" class="sortable" title="Click to sort">Weight</th>
+        <th data-sort="partnerWeight" class="sortable" title="Click to sort">Partner Weight</th>
+        <th data-sort="target" class="sortable" title="Click to sort">Target</th>
+        <th data-sort="growth" class="sortable" title="Click to sort">Growth</th>
+        <th data-sort="conversion" class="sortable" title="Click to sort">Conversion rate</th>
+        <th data-sort="newFans" class="sortable" title="Click to sort">New Fans</th>
+      </tr>
+    </thead>
+    <tbody id="accountTable"></tbody>
+  </table>
+    </div>
+  </section>
+
+  </div><!-- .app-wrap -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
