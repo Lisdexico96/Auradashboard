@@ -83,9 +83,12 @@ export function DashboardClient() {
     return list;
   }, [accounts, filterModel, filterPartner, sortColumn, sortDirection]);
 
-  const modelOptions = useMemo(() => [...new Set(accounts.map((a) => a.name))].sort(), [accounts]);
+  const modelOptions = useMemo(
+    () => Array.from(new Set(accounts.map((a) => a.name))).sort(),
+    [accounts]
+  );
   const partnerOptions = useMemo(
-    () => [...new Set(accounts.map((a) => a.partner).filter((p) => p && p !== "—"))].sort(),
+    () => Array.from(new Set(accounts.map((a) => a.partner).filter((p) => p && p !== "—"))).sort(),
     [accounts]
   );
 
