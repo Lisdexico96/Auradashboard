@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Canela Light Italic Trial – place Canela-LightItalic-Trial.woff2 in public/fonts/ */
+@font-face {
+  font-family: "Canela";
+  src: url("/fonts/Canela-LightItalic-Trial.woff2") format("woff2"), url("/fonts/Canela-LightItalic-Trial.woff") format("woff");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --background: 250 20% 6%;
+    --foreground: 250 100% 98%;
+    --card: 250 18% 12% / 0.82;
+    --card-foreground: 250 100% 98%;
+    --primary: 263 70% 66%;
+    --primary-foreground: 250 20% 6%;
+    --muted: 250 15% 35%;
+    --muted-foreground: 250 15% 65%;
+    --border: 263 30% 22% / 0.8;
+    --input: 263 25% 18% / 0.9;
+    --ring: 263 70% 66%;
+  }
+  body {
+    @apply bg-[hsl(var(--background))] text-[hsl(var(--foreground))] antialiased font-sans;
+  }
+}
+
+/* AURA logo: full-site semi-3D background */
+.logo-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  perspective: 1000px;
+  perspective-origin: 50% 45%;
+}
+.logo-bg::before,
+.logo-bg::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background-image: url("/assets/aura-logo.png");
+  background-size: 120vmax;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+}
+.logo-bg::before {
+  opacity: 0.1;
+  filter: blur(28px);
+  transform: rotateX(16deg) rotateY(-12deg) translateZ(-80px) scale(1.3);
+}
+.logo-bg::after {
+  opacity: 0.08;
+  transform: rotateX(16deg) rotateY(-12deg) scale(1.15);
+  filter: drop-shadow(0 20px 35px rgba(0, 0, 0, 0.2));
+}
